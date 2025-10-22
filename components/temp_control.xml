@@ -1,0 +1,55 @@
+<component name="temp_control">
+	<screen>
+		<!-- Main container with dark background -->
+		<obj style="st_bg_dark" width="100%" height="100%" flex_dir="column" flex_align="center center">
+			
+			<!-- Current Temperature Display -->
+			<obj width="100%" flex_dir="column" flex_align="center center" pad_top="40" pad_bottom="20">
+				<label style="st_lbl_sm" text="Current Temperature" />
+				<label style="st_lbl_big" text="{subject_temp_c / 10}°" pad_top="8" />
+			</obj>
+
+			<!-- Target Temperature Card -->
+			<obj style="st_card" width="90%" flex_dir="column" flex_align="center center" pad_all="20">
+				
+				<!-- Target label -->
+				<label style="st_lbl_sm" text="Target Temperature" />
+				
+				<!-- Large target value -->
+				<label style="st_lbl_big" text="{subject_target_c / 10}°" pad_top="12" pad_bottom="12" />
+				
+				<!-- Temperature slider -->
+				<slider 
+					width="90%" 
+					min_value="#target_min_tenthsC" 
+					max_value="#target_max_tenthsC"
+					value="{subject_target_c}"
+					bg_color="#col_border"
+					bg_opa="100%"
+					main_bg_color="0x2F87FF"
+					knob_bg_color="0xFFFFFF"
+					pad_top="8"
+					pad_bottom="8"
+				/>
+				
+				<!-- Min/Max labels -->
+				<obj width="90%" flex_dir="row" flex_align="space_between center" pad_top="4">
+					<label style="st_lbl_sm" text="{#target_min_tenthsC / 10}°" />
+					<label style="st_lbl_sm" text="{#target_max_tenthsC / 10}°" />
+				</obj>
+			</obj>
+
+			<!-- Fan Status Display -->
+			<obj width="90%" flex_dir="row" flex_align="space_between center" pad_top="24">
+				<label style="st_lbl_sm" text="Fan Speed" />
+				<label style="st_lbl_sm" text="{subject_fan_duty}%" />
+			</obj>
+
+			<!-- Fan duty indicator bar -->
+			<obj width="90%" height="8" bg_color="#col_border" radius="#radius_md" pad_top="8">
+				<obj width="{subject_fan_duty}%" height="100%" bg_color="0x2F87FF" radius="#radius_md" />
+			</obj>
+
+		</obj>
+	</screen>
+</component>
