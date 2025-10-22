@@ -3,11 +3,11 @@
         <preview style_pad_all="20" />
     </previews>
    <styles>
-        <style name="style_main" bg_color="#surface_primary_light" bg_opa="#opa_muted" radius="20"
-                                 height="#unit_sm" width="100%"/>
-        <style name="style_indicator" bg_color="#surface_primary_light" bg_opa="100%"  radius="20"/>
-        <style name="style_knob" bg_color="#surface_primary_light" bg_opa="100%" pad_all="#unit_sm" radius="20"/>
-        <style name="style_dark" bg_color="#surface_primary_dark" />
+        <style name="style_main" style_bg_color="#surface_primary_light" style_bg_opa="#opa_muted" style_radius="20"
+                                 style_height="#unit_sm" style_width="100%"/>
+        <style name="style_indicator" style_bg_color="#surface_primary_light" style_bg_opa="100%"  style_radius="20"/>
+        <style name="style_knob" style_bg_color="#surface_primary_light" style_bg_opa="100%" style_pad_all="#unit_sm" style_radius="20"/>
+        <style name="style_dark" style_bg_color="#surface_primary_dark" />
    </styles>
    <view extends="lv_slider">
         <remove_style_all/>

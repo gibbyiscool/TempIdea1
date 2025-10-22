@@ -4,10 +4,12 @@
 	</previews>
 	
 	<styles>
-		<style name="card_base" style_bg_color="#col_card" style_bg_opa="100%" style_pad_all="#pad_md" style_radius="#radius_md" style_border_width="1" style_border_color="#col_border" />
+		<style name="style_card_base" style_bg_color="#col_card" style_bg_opa="100%" style_pad_all="#pad_md" style_radius="#radius_md" style_border_width="1" style_border_color="#col_border" />
 	</styles>
-	
-	<lv_obj style="card_base">
+    
+	<lv_obj>
+		<remove_style_all/>
+		<style name="style_card_base" />
 		<slot/>
 	</lv_obj>
 </component>

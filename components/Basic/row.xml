@@ -1,5 +1,6 @@
 <component>
-	<lv_obj flex_dir="row">
+	<lv_obj>
+		<flex_dir>row</flex_dir>
 		<slot/>
 	</lv_obj>
 </component>

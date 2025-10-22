@@ -2,8 +2,16 @@
 	<previews>
 		<preview width="200" height="20" style_bg_color="#col_bg_dark"/>
 	</previews>
-	
+    
+	<styles>
+		<style name="style_bar_main" style_bg_color="#col_border" style_bg_opa="100%" style_radius="#radius_md" style_height="8" />
+		<style name="style_bar_indicator" style_bg_color="0x2F87FF" style_bg_opa="100%" style_radius="#radius_md" />
+	</styles>
+
 	<lv_bar min_value="0" max_value="100">
+		<remove_style_all/>
+		<style name="style_bar_main" />
+		<style name="style_bar_indicator" selector="indicator" />
 		<slot/>
 	</lv_bar>
 </component>
