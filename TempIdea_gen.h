@@ -1,9 +1,5 @@
 /**
  * @file TempIdea_gen.h
- * @brief Auto-generated UI header (extended) for TempIdea.
- *
- * Exposes LVGL object handles so application code (TempIdea.c)
- * can update labels, attach event callbacks, and switch screens.
  */
 
 #ifndef TEMPIDEA_GEN_H
@@ -22,77 +18,103 @@ extern "C" {
  *********************/
 
 #ifdef LV_LVGL_H_INCLUDE_SIMPLE
-  #include "lvgl.h"
+    #include "lvgl.h"
 #else
-  #include "lvgl/lvgl.h"
+    #include "lvgl/lvgl.h"
 #endif
 
+/*********************
+ *      DEFINES
+ *********************/
+
+#define COL_BG_DARK lv_color_hex(0x111111)
+
+#define COL_CARD lv_color_hex(0x1C1C1C)
+
+#define COL_BORDER lv_color_hex(0x2A2A2A)
+
+#define COL_TEXT lv_color_hex(0xFFFFFF)
+
+#define COL_TEXT_SM lv_color_hex(0xE0E0E0)
+
+#define PAD_MD 8
+
+#define PAD_LG 10
+
+#define RADIUS_MD 8
+
+#define LONG_PRESS_MS 700
+
+#define IDLE_DIM_S 30
+
+#define TARGET_MIN_TENTHSC 150
+
+#define TARGET_MAX_TENTHSC 450
+
 /**********************
- * GLOBAL OBJECTS
+ *      TYPEDEFS
+ **********************/
+
+/**********************
+ * GLOBAL VARIABLES
  **********************/
 
 /*-------------------
  * Permanent screens
  *------------------*/
 
-/* Main (Idle) screen */
-extern lv_obj_t *ui_MainScreen;
-extern lv_obj_t *ui_MainPanel;        /* full-screen touch area */
-extern lv_obj_t *ui_LabelTempBig;     /* current interior temp (big) */
-extern lv_obj_t *ui_LabelFan;         /* fan duty e.g., "45%" */
-extern lv_obj_t *ui_LabelTargetSmall; /* "Target: 30.0°C" */
+/*----------------
+ * Global styles
+ *----------------*/
 
-/* Set Target screen */
-extern lv_obj_t *ui_SetScreen;
-extern lv_obj_t *ui_SetPanel;
-extern lv_obj_t *ui_LabelSetTitle;    /* "Set Target" */
-extern lv_obj_t *ui_LabelSetValue;    /* current slider value text */
-extern lv_obj_t *ui_SliderTarget;     /* 15.0°C .. 45.0°C (0.1°C steps) */
-extern lv_obj_t *ui_BtnSave;
-extern lv_obj_t *ui_BtnCancel;
-
-/* Options screen (long-press) */
-extern lv_obj_t *ui_OptsScreen;
-extern lv_obj_t *ui_OptsPanel;
-extern lv_obj_t *ui_SwitchUnits;      /* °C/°F */
-extern lv_obj_t *ui_SwitchManual;     /* manual override on/off */
-extern lv_obj_t *ui_SliderManual;     /* manual duty 0..100% */
-extern lv_obj_t *ui_SwitchAlarm;      /* over-temp alarm enable */
-extern lv_obj_t *ui_BtnBack;
+extern lv_style_t st_bg_dark;
+extern lv_style_t st_lbl_big;
+extern lv_style_t st_lbl_sm;
+extern lv_style_t st_card;
+extern lv_style_t st_btn_primary;
 
 /*----------------
- * Global styles / fonts / images
- * (declare here if your generator exposes them)
+ * Fonts
  *----------------*/
+
+extern lv_font_t * font_m20;
+
+extern lv_font_t * font_m36;
+
+extern lv_font_t * font_m48;
+
+/*----------------
+ * Images
+ *----------------*/
+
+/*----------------
+ * Subjects
+ *----------------*/
+
+extern lv_subject_t subject_temp_c;
+extern lv_subject_t subject_target_c;
+extern lv_subject_t subject_fan_duty;
+extern lv_subject_t subject_units;
+extern lv_subject_t subject_manual_override;
+extern lv_subject_t subject_manual_duty;
+extern lv_subject_t subject_alarm_enabled;
+extern lv_subject_t subject_alarm_high_c;
+extern lv_subject_t subject_cal_offset_c;
+extern lv_subject_t subject_brightness_pct;
 
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
 
-/**
- * @brief Initialize all generated UI objects.
- * @param asset_path Optional path to images/fonts; pass NULL if not used.
- */
-void TempIdea_init_gen(const char *asset_path);
-
 /*----------------
- * Event Callbacks (to be attached by app code)
+ * Event Callbacks
  *----------------*/
 
-/* Main panel: handles tap vs long-press */
-void ui_event_main_panel(lv_event_t *e);
+/**
+ * Initialize the component library
+ */
 
-/* Set Target */
-void ui_event_slider_target(lv_event_t *e);
-void ui_event_btn_save(lv_event_t *e);
-void ui_event_btn_cancel(lv_event_t *e);
-
-/* Options */
-void ui_event_sw_units(lv_event_t *e);
-void ui_event_sw_manual(lv_event_t *e);
-void ui_event_slider_manual(lv_event_t *e);
-void ui_event_sw_alarm(lv_event_t *e);
-void ui_event_btn_back(lv_event_t *e);
+void TempIdea_init_gen(const char * asset_path);
 
 /**********************
  *      MACROS
@@ -106,4 +128,4 @@ void ui_event_btn_back(lv_event_t *e);
 } /*extern "C"*/
 #endif
 
-#endif /* TEMPIDEA_GEN_H */
+#endif /*TEMPIDEA_GEN_H*/

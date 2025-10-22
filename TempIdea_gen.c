@@ -2,254 +2,205 @@
  * @file TempIdea_gen.c
  */
 
+/*********************
+ *      INCLUDES
+ *********************/
+
 #include "TempIdea_gen.h"
 
+#if LV_USE_XML
+#endif /* LV_USE_XML */
+
 /*********************
- *  FORWARD DECLS
+ *      DEFINES
  *********************/
-/* Event callbacks are implemented by your app (TempIdea.c) */
-void ui_event_main_panel(lv_event_t *e);
-void ui_event_slider_target(lv_event_t *e);
-void ui_event_btn_save(lv_event_t *e);
-void ui_event_btn_cancel(lv_event_t *e);
-void ui_event_sw_units(lv_event_t *e);
-void ui_event_sw_manual(lv_event_t *e);
-void ui_event_slider_manual(lv_event_t *e);
-void ui_event_sw_alarm(lv_event_t *e);
-void ui_event_btn_back(lv_event_t *e);
 
 /**********************
- *  GLOBAL OBJECTS
+ *      TYPEDEFS
  **********************/
-lv_obj_t *ui_MainScreen;
-lv_obj_t *ui_MainPanel;
-lv_obj_t *ui_LabelTempBig;
-lv_obj_t *ui_LabelFan;
-lv_obj_t *ui_LabelTargetSmall;
-
-lv_obj_t *ui_SetScreen;
-lv_obj_t *ui_SetPanel;
-lv_obj_t *ui_LabelSetTitle;
-lv_obj_t *ui_LabelSetValue;
-lv_obj_t *ui_SliderTarget;
-lv_obj_t *ui_BtnSave;
-lv_obj_t *ui_BtnCancel;
-
-lv_obj_t *ui_OptsScreen;
-lv_obj_t *ui_OptsPanel;
-lv_obj_t *ui_SwitchUnits;
-lv_obj_t *ui_SwitchManual;
-lv_obj_t *ui_SliderManual;
-lv_obj_t *ui_SwitchAlarm;
-lv_obj_t *ui_BtnBack;
 
 /**********************
- *  STATIC: styles
+ *  STATIC PROTOTYPES
  **********************/
-static lv_style_t st_bg_dark;
-static lv_style_t st_lbl_big;
-static lv_style_t st_lbl_sm;
-static lv_style_t st_card;
 
 /**********************
- *  STATIC HELPERS
+ *  STATIC VARIABLES
  **********************/
-static void styles_init(void) {
-    lv_style_init(&st_bg_dark);
-    lv_style_set_bg_color(&st_bg_dark, lv_color_hex(0x111111));
-    lv_style_set_bg_opa(&st_bg_dark, LV_OPA_COVER);
 
-    lv_style_init(&st_lbl_big);
-    lv_style_set_text_color(&st_lbl_big, lv_color_white());
-    lv_style_set_text_font(&st_lbl_big, &lv_font_montserrat_48);
-
-    lv_style_init(&st_lbl_sm);
-    lv_style_set_text_color(&st_lbl_sm, lv_color_hex(0xE0E0E0));
-    lv_style_set_text_font(&st_lbl_sm, &lv_font_montserrat_20);
-
-    lv_style_init(&st_card);
-    lv_style_set_pad_all(&st_card, 8);
-    lv_style_set_radius(&st_card, 8);
-    lv_style_set_bg_color(&st_card, lv_color_hex(0x1C1C1C));
-    lv_style_set_bg_opa(&st_card, LV_OPA_COVER);
-    lv_style_set_border_color(&st_card, lv_color_hex(0x2A2A2A));
-    lv_style_set_border_width(&st_card, 1);
-}
-
-/* Label factory */
-static lv_obj_t* make_label(lv_obj_t *parent, const char *txt, const lv_style_t *sty) {
-    lv_obj_t *l = lv_label_create(parent);
-    if (sty) lv_obj_add_style(l, (lv_style_t*)sty, 0);
-    if (txt) lv_label_set_text(l, txt);
-    return l;
-}
-
-/* Simple button with text */
-static lv_obj_t* make_btn(lv_obj_t *parent, const char *txt, lv_event_cb_t cb) {
-    lv_obj_t *b = lv_btn_create(parent);
-    lv_obj_add_event_cb(b, cb, LV_EVENT_CLICKED, NULL);
-    lv_obj_t *t = lv_label_create(b);
-    lv_label_set_text(t, txt);
-    lv_obj_center(t);
-    return b;
-}
+/*----------------
+ * Translations
+ *----------------*/
 
 /**********************
- *  BUILD: Main screen
+ *  GLOBAL VARIABLES
  **********************/
-static void build_main_screen(void) {
-    ui_MainScreen = lv_obj_create(NULL);
-    lv_obj_add_style(ui_MainScreen, &st_bg_dark, 0);
 
-    ui_MainPanel = lv_obj_create(ui_MainScreen);
-    lv_obj_remove_style_all(ui_MainPanel);
-    lv_obj_set_size(ui_MainPanel, LV_PCT(100), LV_PCT(100));
-    lv_obj_add_event_cb(ui_MainPanel, ui_event_main_panel, LV_EVENT_ALL, NULL);
+/*--------------------
+ *  Permanent screens
+ *-------------------*/
 
-    ui_LabelTempBig = make_label(ui_MainPanel, "--°", &st_lbl_big);
-    lv_obj_center(ui_LabelTempBig);
+/*----------------
+ * Global styles
+ *----------------*/
 
-    ui_LabelFan = make_label(ui_MainPanel, "Fan --%", &st_lbl_sm);
-    lv_obj_align(ui_LabelFan, LV_ALIGN_BOTTOM_LEFT, 10, -10);
+lv_style_t st_bg_dark;
+lv_style_t st_lbl_big;
+lv_style_t st_lbl_sm;
+lv_style_t st_card;
+lv_style_t st_btn_primary;
 
-    ui_LabelTargetSmall = make_label(ui_MainPanel, "Target --.-°", &st_lbl_sm);
-    lv_obj_align(ui_LabelTargetSmall, LV_ALIGN_BOTTOM_RIGHT, -10, -10);
-}
+/*----------------
+ * Fonts
+ *----------------*/
 
-/************************
- *  BUILD: Set Target UI
- ************************/
-static void build_set_screen(void) {
-    ui_SetScreen = lv_obj_create(NULL);
-    lv_obj_add_style(ui_SetScreen, &st_bg_dark, 0);
+lv_font_t * font_m20;
+extern uint8_t Montserrat_Regular_ttf_data[];
+extern size_t Montserrat_Regular_ttf_data_size;
+lv_font_t * font_m36;
+lv_font_t * font_m48;
 
-    ui_SetPanel = lv_obj_create(ui_SetScreen);
-    lv_obj_remove_style_all(ui_SetPanel);
-    lv_obj_set_size(ui_SetPanel, LV_PCT(100), LV_PCT(100));
-    lv_obj_add_style(ui_SetPanel, &st_card, 0);
+/*----------------
+ * Images
+ *----------------*/
 
-    ui_LabelSetTitle = make_label(ui_SetPanel, "Set Target", &st_lbl_sm);
-    lv_obj_align(ui_LabelSetTitle, LV_ALIGN_TOP_MID, 0, 8);
+/*----------------
+ * Subjects
+ *----------------*/
 
-    ui_LabelSetValue = lv_label_create(ui_SetPanel);
-    lv_obj_set_style_text_font(ui_LabelSetValue, &lv_font_montserrat_36, 0);
-    lv_label_set_text(ui_LabelSetValue, "--.-°C");
-    lv_obj_align(ui_LabelSetValue, LV_ALIGN_TOP_MID, 0, 34);
+lv_subject_t subject_temp_c;
+lv_subject_t subject_target_c;
+lv_subject_t subject_fan_duty;
+lv_subject_t subject_units;
+lv_subject_t subject_manual_override;
+lv_subject_t subject_manual_duty;
+lv_subject_t subject_alarm_enabled;
+lv_subject_t subject_alarm_high_c;
+lv_subject_t subject_cal_offset_c;
+lv_subject_t subject_brightness_pct;
 
-    ui_SliderTarget = lv_slider_create(ui_SetPanel);
-    lv_obj_set_width(ui_SliderTarget, LV_PCT(88));
-    /* 15.0°C .. 45.0°C in 0.1°C steps */
-    lv_slider_set_range(ui_SliderTarget, 150, 450);
-    lv_obj_align(ui_SliderTarget, LV_ALIGN_CENTER, 0, -8);
-    lv_obj_add_event_cb(ui_SliderTarget, ui_event_slider_target, LV_EVENT_VALUE_CHANGED, NULL);
-
-    /* Button row */
-    lv_obj_t *row = lv_obj_create(ui_SetPanel);
-    lv_obj_remove_style_all(row);
-    lv_obj_set_size(row, LV_PCT(88), LV_SIZE_CONTENT);
-    lv_obj_align(row, LV_ALIGN_BOTTOM_MID, 0, -12);
-    lv_obj_set_flex_flow(row, LV_FLEX_FLOW_ROW);
-    lv_obj_set_style_pad_gap(row, 10, 0);
-
-    ui_BtnCancel = make_btn(row, "Cancel", ui_event_btn_cancel);
-    lv_obj_set_size(ui_BtnCancel, LV_PCT(50), 42);
-
-    ui_BtnSave = make_btn(row, "Save", ui_event_btn_save);
-    lv_obj_set_size(ui_BtnSave, LV_PCT(50), 42);
-}
-
-/************************
- *  BUILD: Options screen
- ************************/
-static void build_opts_screen(void) {
-    ui_OptsScreen = lv_obj_create(NULL);
-    lv_obj_add_style(ui_OptsScreen, &st_bg_dark, 0);
-
-    ui_OptsPanel = lv_obj_create(ui_OptsScreen);
-    lv_obj_remove_style_all(ui_OptsPanel);
-    lv_obj_set_size(ui_OptsPanel, LV_PCT(100), LV_PCT(100));
-    lv_obj_add_style(ui_OptsPanel, &st_card, 0);
-
-    /* Layout */
-    lv_obj_set_flex_flow(ui_OptsPanel, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_style_pad_row(ui_OptsPanel, 8, 0);
-    lv_obj_set_style_pad_all(ui_OptsPanel, 10, 0);
-
-    /* Units switch */
-    {
-        lv_obj_t *cont = lv_obj_create(ui_OptsPanel);
-        lv_obj_remove_style_all(cont);
-        lv_obj_set_width(cont, LV_PCT(100));
-        lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_ROW);
-        lv_obj_set_style_pad_gap(cont, 8, 0);
-
-        lv_obj_t *lbl = make_label(cont, "Units (°C/°F)", &st_lbl_sm);
-        (void)lbl;
-
-        ui_SwitchUnits = lv_switch_create(cont);
-        lv_obj_add_event_cb(ui_SwitchUnits, ui_event_sw_units, LV_EVENT_VALUE_CHANGED, NULL);
-        lv_obj_align(ui_SwitchUnits, LV_ALIGN_RIGHT_MID, 0, 0);
-    }
-
-    /* Manual override + slider */
-    {
-        lv_obj_t *cont = lv_obj_create(ui_OptsPanel);
-        lv_obj_remove_style_all(cont);
-        lv_obj_set_width(cont, LV_PCT(100));
-        lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_ROW);
-        lv_obj_set_style_pad_gap(cont, 8, 0);
-
-        lv_obj_t *lbl = make_label(cont, "Manual override", &st_lbl_sm);
-        (void)lbl;
-
-        ui_SwitchManual = lv_switch_create(cont);
-        lv_obj_add_event_cb(ui_SwitchManual, ui_event_sw_manual, LV_EVENT_VALUE_CHANGED, NULL);
-        lv_obj_align(ui_SwitchManual, LV_ALIGN_RIGHT_MID, 0, 0);
-
-        ui_SliderManual = lv_slider_create(ui_OptsPanel);
-        lv_obj_set_width(ui_SliderManual, LV_PCT(100));
-        lv_slider_set_range(ui_SliderManual, 0, 100);
-        lv_obj_add_event_cb(ui_SliderManual, ui_event_slider_manual, LV_EVENT_VALUE_CHANGED, NULL);
-    }
-
-    /* Alarm switch */
-    {
-        lv_obj_t *cont = lv_obj_create(ui_OptsPanel);
-        lv_obj_remove_style_all(cont);
-        lv_obj_set_width(cont, LV_PCT(100));
-        lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_ROW);
-        lv_obj_set_style_pad_gap(cont, 8, 0);
-
-        lv_obj_t *lbl = make_label(cont, "Overheat alarm", &st_lbl_sm);
-        (void)lbl;
-
-        ui_SwitchAlarm = lv_switch_create(cont);
-        lv_obj_add_event_cb(ui_SwitchAlarm, ui_event_sw_alarm, LV_EVENT_VALUE_CHANGED, NULL);
-        lv_obj_align(ui_SwitchAlarm, LV_ALIGN_RIGHT_MID, 0, 0);
-    }
-
-    /* Back button */
-    ui_BtnBack = make_btn(ui_OptsPanel, "Back", ui_event_btn_back);
-    lv_obj_set_size(ui_BtnBack, LV_PCT(100), 42);
-}
+/**********************
+ *      MACROS
+ **********************/
 
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
-void TempIdea_init_gen(const char *asset_path) {
-    (void)asset_path;
 
-    styles_init();
+void TempIdea_init_gen(const char * asset_path)
+{
+    char buf[256];
 
-    build_main_screen();
-    build_set_screen();
-    build_opts_screen();
+    /*----------------
+     * Global styles
+     *----------------*/
 
-    /* Load main screen by default.
-     * Your app can switch via lv_scr_load(ui_SetScreen) / ui_OptsScreen. */
-    lv_scr_load(ui_MainScreen);
+    static bool style_inited = false;
+
+    if (!style_inited) {
+        lv_style_init(&st_bg_dark);
+        lv_style_set_bg_color(&st_bg_dark, COL_BG_DARK);
+        lv_style_set_bg_opa(&st_bg_dark, (255 * 100 / 100));
+
+        lv_style_init(&st_lbl_big);
+        lv_style_set_text_color(&st_lbl_big, COL_TEXT);
+        lv_style_set_text_font(&st_lbl_big, font_m48);
+
+        lv_style_init(&st_lbl_sm);
+        lv_style_set_text_color(&st_lbl_sm, COL_TEXT_SM);
+        lv_style_set_text_font(&st_lbl_sm, font_m20);
+
+        lv_style_init(&st_card);
+        lv_style_set_bg_color(&st_card, COL_CARD);
+        lv_style_set_bg_opa(&st_card, (255 * 100 / 100));
+        lv_style_set_pad_all(&st_card, PAD_MD);
+        lv_style_set_radius(&st_card, RADIUS_MD);
+        lv_style_set_border_color(&st_card, COL_BORDER);
+        lv_style_set_border_width(&st_card, 1);
+
+        lv_style_init(&st_btn_primary);
+        lv_style_set_pad_all(&st_btn_primary, PAD_MD);
+        lv_style_set_radius(&st_btn_primary, RADIUS_MD);
+        lv_style_set_bg_color(&st_btn_primary, lv_color_hex(0x2F87FF));
+        lv_style_set_bg_opa(&st_btn_primary, (255 * 100 / 100));
+        lv_style_set_text_color(&st_btn_primary, lv_color_hex(0xFFFFFF));
+        lv_style_set_text_font(&st_btn_primary, font_m20);
+
+        style_inited = true;
+    }
+
+    /*----------------
+     * Fonts
+     *----------------*/
+
+    /* create tiny ttf font 'font_m20' from C array */
+    font_m20 = lv_tiny_ttf_create_data(Montserrat_Regular_ttf_data, Montserrat_Regular_ttf_data_size, 20);
+    /* create tiny ttf font 'font_m36' from C array */
+    font_m36 = lv_tiny_ttf_create_data(Montserrat_Regular_ttf_data, Montserrat_Regular_ttf_data_size, 36);
+    /* create tiny ttf font 'font_m48' from C array */
+    font_m48 = lv_tiny_ttf_create_data(Montserrat_Regular_ttf_data, Montserrat_Regular_ttf_data_size, 48);
+
+
+    /*----------------
+     * Images
+     *----------------*/
+    /*----------------
+     * Subjects
+     *----------------*/
+    lv_subject_init_int(&subject_temp_c, 275);
+    lv_subject_init_int(&subject_target_c, 300);
+    lv_subject_init_int(&subject_fan_duty, 20);
+    lv_subject_init_int(&subject_units, 0);
+    lv_subject_init_int(&subject_manual_override, 0);
+    lv_subject_init_int(&subject_manual_duty, 60);
+    lv_subject_init_int(&subject_alarm_enabled, 1);
+    lv_subject_init_int(&subject_alarm_high_c, 450);
+    lv_subject_init_int(&subject_cal_offset_c, 0);
+    lv_subject_init_int(&subject_brightness_pct, 100);
+
+    /*----------------
+     * Translations
+     *----------------*/
+
+#if LV_USE_XML
+    /* Register widgets */
+
+    /* Register fonts */
+    lv_xml_register_font(NULL, "font_m20", font_m20);
+    lv_xml_register_font(NULL, "font_m36", font_m36);
+    lv_xml_register_font(NULL, "font_m48", font_m48);
+
+    /* Register subjects */
+    lv_xml_register_subject(NULL, "subject_temp_c", &subject_temp_c);
+    lv_xml_register_subject(NULL, "subject_target_c", &subject_target_c);
+    lv_xml_register_subject(NULL, "subject_fan_duty", &subject_fan_duty);
+    lv_xml_register_subject(NULL, "subject_units", &subject_units);
+    lv_xml_register_subject(NULL, "subject_manual_override", &subject_manual_override);
+    lv_xml_register_subject(NULL, "subject_manual_duty", &subject_manual_duty);
+    lv_xml_register_subject(NULL, "subject_alarm_enabled", &subject_alarm_enabled);
+    lv_xml_register_subject(NULL, "subject_alarm_high_c", &subject_alarm_high_c);
+    lv_xml_register_subject(NULL, "subject_cal_offset_c", &subject_cal_offset_c);
+    lv_xml_register_subject(NULL, "subject_brightness_pct", &subject_brightness_pct);
+
+    /* Register callbacks */
+#endif
+
+    /* Register all the global assets so that they won't be created again when globals.xml is parsed.
+     * While running in the editor skip this step to update the preview when the XML changes */
+#if LV_USE_XML && !defined(LV_EDITOR_PREVIEW)
+    /* Register images */
+#endif
+
+#if LV_USE_XML == 0
+    /*--------------------
+     *  Permanent screens
+     *-------------------*/
+    /* If XML is enabled it's assumed that the permanent screens are created
+     * manaully from XML using lv_xml_create() */
+#endif
 }
 
+/* Callbacks */
+
 /**********************
- *   END OF FILE
+ *   STATIC FUNCTIONS
  **********************/

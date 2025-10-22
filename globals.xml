@@ -1,26 +1,20 @@
 <globals>
 	<api>
 		<!-- Enumerations used in code/UI bindings -->
-		<enumdefs>
-			<enum name="units_mode">
-				<member name="Celsius" value="0" />
-				<member name="Fahrenheit" value="1" />
-			</enum>
-		</enumdefs>
 	</api>
 
 	<consts>
 		<!-- Colors -->
-		<color name="col_bg_dark" value="#111111" />
-		<color name="col_card" value="#1C1C1C" />
-		<color name="col_border" value="#2A2A2A" />
-		<color name="col_text" value="#FFFFFF" />
-		<color name="col_text_sm" value="#E0E0E0" />
+		<color name="col_bg_dark" value="0x111111" />
+		<color name="col_card" value="0x1C1C1C" />
+		<color name="col_border" value="0x2A2A2A" />
+		<color name="col_text" value="0xFFFFFF" />
+		<color name="col_text_sm" value="0xE0E0E0" />
 
 		<!-- Spacing / radius -->
-		<px name="pad_md" value="8" />
-		<px name="pad_lg" value="10" />
-		<px name="radius_md" value="8" />
+		<int name="pad_md" value="8" />
+		<int name="pad_lg" value="10" />
+		<int name="radius_md" value="8" />
 
 		<!-- Timings / limits -->
 		<int name="long_press_ms" value="700" />
@@ -34,83 +28,61 @@
 
 	<styles>
 		<!-- Fullscreen dark background -->
-		<style name="st_bg_dark">
-			<prop name="bg_color" value="@col_bg_dark" />
-			<prop name="bg_opa" value="cover" />
-		</style>
+		<style name="st_bg_dark" bg_color="#col_bg_dark" bg_opa="100%" />
 
 		<!-- Big label (main temperature) -->
-		<style name="st_lbl_big">
-			<prop name="text_color" value="@col_text" />
-			<prop name="text_font" value="font_m48" />
-		</style>
+		<style name="st_lbl_big" text_color="#col_text" text_font="font_m48" />
 
 		<!-- Small label (fan %, target, captions) -->
-		<style name="st_lbl_sm">
-			<prop name="text_color" value="@col_text_sm" />
-			<prop name="text_font" value="font_m20" />
-		</style>
+		<style name="st_lbl_sm" text_color="#col_text_sm" text_font="font_m20" />
 
 		<!-- Card panel used on Set/Options screens -->
-		<style name="st_card">
-			<prop name="bg_color" value="@col_card" />
-			<prop name="bg_opa" value="cover" />
-			<prop name="pad_all" value="@pad_md" />
-			<prop name="radius" value="@radius_md" />
-			<prop name="border_color" value="@col_border" />
-			<prop name="border_width" value="1" />
-		</style>
+		<style
+			name="st_card"
+			bg_color="#col_card"
+			bg_opa="100%"
+			pad_all="#pad_md"
+			radius="#radius_md"
+			border_color="#col_border"
+			border_width="1"
+		/>
 
 		<!-- Primary button (optional) -->
-		<style name="st_btn_primary">
-			<prop name="pad_all" value="@pad_md" />
-			<prop name="radius" value="@radius_md" />
-			<prop name="bg_color" value="#2F87FF" />
-			<prop name="bg_opa" value="cover" />
-			<prop name="text_color" value="#FFFFFF" />
-			<prop name="text_font" value="font_m20" />
-		</style>
+		<style
+			name="st_btn_primary"
+			pad_all="#pad_md"
+			radius="#radius_md"
+			bg_color="0x2F87FF"
+			bg_opa="100%"
+			text_color="0xFFFFFF"
+			text_font="font_m20"
+		/>
 	</styles>
 
 	<subjects>
 		<!-- Bindable state the UI and code can share -->
-		<float name="subject_temp_c" init="27.5" />
-		<!-- current interior temperature (°C) -->
-		<float name="subject_target_c" init="30.0" />
-		<!-- target setpoint (°C) -->
-		<int name="subject_fan_duty" init="20" />
-		<!-- 0..100 (%) -->
-		<int name="subject_units" init="0" enum="units_mode" />
-		<!-- 0=C, 1=F -->
-		<bool name="subject_manual_override" init="false" />
-		<int name="subject_manual_duty" init="60" />
-		<!-- 0..100 (%) -->
-		<bool name="subject_alarm_enabled" init="true" />
-		<float name="subject_alarm_high_c" init="45.0" />
-		<float name="subject_cal_offset_c" init="0.0" />
-		<int name="subject_brightness_pct" init="100" />
-		<!-- screen dimming -->
+		<int name="subject_temp_c" value="275" help="current interior temperature (°C * 10)" />
+		<int name="subject_target_c" value="300" help="target setpoint (°C * 10)" />
+		<int name="subject_fan_duty" value="20" help="0..100 (%)" />
+		<int name="subject_units" value="0" help="0=C, 1=F" />
+		<int name="subject_manual_override" value="0" help="0=false, 1=true" />
+		<int name="subject_manual_duty" value="60" help="0..100 (%)" />
+		<int name="subject_alarm_enabled" value="1" help="0=false, 1=true" />
+		<int name="subject_alarm_high_c" value="450" help="alarm threshold (°C * 10)" />
+		<int name="subject_cal_offset_c" value="0" help="calibration offset (°C * 10)" />
+		<int name="subject_brightness_pct" value="100" help="screen dimming 0..100" />
 	</subjects>
 
 	<images>
 		<!-- Placeholders: reference files in your assets folder if you add icons -->
-		<!-- <file name="ico_fan"  src="images/fan.png"/> -->
-		<!-- <file name="ico_gear" src="images/gear.png"/> -->
+		<!-- <file name="ico_fan" src_path="images/fan.png"/> -->
+		<!-- <file name="ico_gear" src_path="images/gear.png"/> -->
 	</images>
 
 	<fonts>
-		<!-- Pick one approach: tiny_ttf (baked) or freetype (runtime). 
-         Adjust src paths to your repo. -->
-
 		<!-- Compact baked fonts (Tiny TTF) -->
-		<tiny_ttf name="font_m20" src="fonts/Montserrat-Regular.ttf" size="20" />
-		<tiny_ttf name="font_m36" src="fonts/Montserrat-Regular.ttf" size="36" />
-		<tiny_ttf name="font_m48" src="fonts/Montserrat-Regular.ttf" size="48" />
-
-		<!-- OR FreeType (if enabled):
-    <freetype name="font_m20" path="fonts/Montserrat-Regular.ttf" size="20"/>
-    <freetype name="font_m36" path="fonts/Montserrat-Regular.ttf" size="36"/>
-    <freetype name="font_m48" path="fonts/Montserrat-Regular.ttf" size="48"/>
-    -->
+		<tiny_ttf name="font_m20" src_path="fonts/Montserrat-Regular.ttf" size="20" />
+		<tiny_ttf name="font_m36" src_path="fonts/Montserrat-Regular.ttf" size="36" />
+		<tiny_ttf name="font_m48" src_path="fonts/Montserrat-Regular.ttf" size="48" />
 	</fonts>
 </globals>
