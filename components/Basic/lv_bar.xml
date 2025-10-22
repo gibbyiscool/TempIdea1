@@ -1,0 +1,9 @@
+<component>
+	<previews>
+		<preview width="200" height="20" style_bg_color="#col_bg_dark"/>
+	</previews>
+	
+	<lv_bar min_value="0" max_value="100">
+		<slot/>
+	</lv_bar>
+</component>

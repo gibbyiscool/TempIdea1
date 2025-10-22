@@ -1,55 +1,138 @@
-<component name="temp_control">
-	<screen>
-		<!-- Main container with dark background -->
-		<obj style="st_bg_dark" width="100%" height="100%" flex_dir="column" flex_align="center center">
+<component>
+	<previews>
+		<preview width="320" height="480" style_bg_color="#col_bg_dark"/>
+	</previews>
+	
+	<styles>
+		<!-- Text styles -->
+		<style name="temp_big" text_font="font_m48" text_color="#col_text" />
+		<style name="temp_small" text_font="font_m20" text_color="#col_text_sm" />
+		
+		<!-- Slider styles -->
+		<style name="slider_main" bg_color="#col_border" bg_opa="100%" radius="#radius_md" height="8" width="100%" />
+		<style name="slider_indicator" bg_color="0x2F87FF" bg_opa="100%" radius="#radius_md" />
+		<style name="slider_knob" bg_color="0xFFFFFF" bg_opa="100%" pad_all="12" radius="12" border_width="2" border_color="0x2F87FF" />
+		
+		<!-- Bar styles -->
+		<style name="bar_main" bg_color="#col_border" bg_opa="100%" radius="#radius_md" height="8" width="100%" />
+		<style name="bar_indicator" bg_color="0x2F87FF" bg_opa="100%" radius="#radius_md" />
+		
+		<!-- Card style -->
+		<style name="card_style" bg_color="#col_card" bg_opa="100%" pad_all="20" radius="#radius_md" border_width="1" border_color="#col_border" />
+		
+		<!-- Layout styles -->
+		<style name="full_width" width="100%" />
+		<style name="width_90" width="90%" />
+	</styles>
+
+	<view extends="lv_obj">
+		<remove_style_all/>
+		<width>100%</width>
+		<height>100%</height>
+		<bg_color>#col_bg_dark</bg_color>
+		<bg_opa>100%</bg_opa>
+		<pad_all>20</pad_all>
+		<flex_dir>column</flex_dir>
+		<flex_align>center start</flex_align>
+		
+		<!-- Current Temperature Display -->
+		<lv_obj>
+			<remove_style_all/>
+			<style name="full_width" />
+			<flex_dir>column</flex_dir>
+			<flex_align>center center</flex_align>
+			<pad_bottom>30</pad_bottom>
 			
-			<!-- Current Temperature Display -->
-			<obj width="100%" flex_dir="column" flex_align="center center" pad_top="40" pad_bottom="20">
-				<label style="st_lbl_sm" text="Current Temperature" />
-				<label style="st_lbl_big" text="{subject_temp_c / 10}°" pad_top="8" />
-			</obj>
+			<lv_label text="Current Temperature">
+				<style name="temp_small" />
+			</lv_label>
+			
+			<lv_label bind_text="subject_temp_c" bind_text-fmt="%.1f°">
+				<style name="temp_big" />
+				<pad_top>8</pad_top>
+			</lv_label>
+		</lv_obj>
 
-			<!-- Target Temperature Card -->
-			<obj style="st_card" width="90%" flex_dir="column" flex_align="center center" pad_all="20">
+		<!-- Target Temperature Card -->
+		<lv_obj>
+			<remove_style_all/>
+			<style name="card_style" />
+			<style name="width_90" />
+			<flex_dir>column</flex_dir>
+			<flex_align>center center</flex_align>
+			
+			<!-- Target label -->
+			<lv_label text="Target Temperature">
+				<style name="temp_small" />
+			</lv_label>
+			
+			<!-- Target value -->
+			<lv_label bind_text="subject_target_c" bind_text-fmt="%.1f°">
+				<style name="temp_big" />
+				<pad_top>12</pad_top>
+				<pad_bottom>12</pad_bottom>
+			</lv_label>
+			
+			<!-- Temperature Slider -->
+			<lv_slider 
+				bind_value="subject_target_c" 
+				min_value="#target_min_tenthsC" 
+				max_value="#target_max_tenthsC">
+				<remove_style_all/>
+				<style name="slider_main" />
+				<style name="slider_indicator" selector="indicator" />
+				<style name="slider_knob" selector="knob" />
+				<width>90%</width>
+				<pad_top>8</pad_top>
+				<pad_bottom>8</pad_bottom>
+			</lv_slider>
+			
+			<!-- Min/Max labels -->
+			<lv_obj>
+				<remove_style_all/>
+				<width>90%</width>
+				<flex_dir>row</flex_dir>
+				<flex_align>space_between center</flex_align>
+				<pad_top>4</pad_top>
 				
-				<!-- Target label -->
-				<label style="st_lbl_sm" text="Target Temperature" />
+				<lv_label text="15.0°">
+					<style name="temp_small" />
+				</lv_label>
 				
-				<!-- Large target value -->
-				<label style="st_lbl_big" text="{subject_target_c / 10}°" pad_top="12" pad_bottom="12" />
-				
-				<!-- Temperature slider -->
-				<slider 
-					width="90%" 
-					min_value="#target_min_tenthsC" 
-					max_value="#target_max_tenthsC"
-					value="{subject_target_c}"
-					bg_color="#col_border"
-					bg_opa="100%"
-					main_bg_color="0x2F87FF"
-					knob_bg_color="0xFFFFFF"
-					pad_top="8"
-					pad_bottom="8"
-				/>
-				
-				<!-- Min/Max labels -->
-				<obj width="90%" flex_dir="row" flex_align="space_between center" pad_top="4">
-					<label style="st_lbl_sm" text="{#target_min_tenthsC / 10}°" />
-					<label style="st_lbl_sm" text="{#target_max_tenthsC / 10}°" />
-				</obj>
-			</obj>
+				<lv_label text="45.0°">
+					<style name="temp_small" />
+				</lv_label>
+			</lv_obj>
+		</lv_obj>
 
-			<!-- Fan Status Display -->
-			<obj width="90%" flex_dir="row" flex_align="space_between center" pad_top="24">
-				<label style="st_lbl_sm" text="Fan Speed" />
-				<label style="st_lbl_sm" text="{subject_fan_duty}%" />
-			</obj>
+		<!-- Fan Speed Label Row -->
+		<lv_obj>
+			<remove_style_all/>
+			<style name="width_90" />
+			<flex_dir>row</flex_dir>
+			<flex_align>space_between center</flex_align>
+			<pad_top>24</pad_top>
+			
+			<lv_label text="Fan Speed">
+				<style name="temp_small" />
+			</lv_label>
+			
+			<lv_label bind_text="subject_fan_duty" bind_text-fmt="%d%%">
+				<style name="temp_small" />
+			</lv_label>
+		</lv_obj>
 
-			<!-- Fan duty indicator bar -->
-			<obj width="90%" height="8" bg_color="#col_border" radius="#radius_md" pad_top="8">
-				<obj width="{subject_fan_duty}%" height="100%" bg_color="0x2F87FF" radius="#radius_md" />
-			</obj>
+		<!-- Fan Duty Bar -->
+		<lv_bar 
+			bind_value="subject_fan_duty" 
+			min_value="0" 
+			max_value="100">
+			<remove_style_all/>
+			<style name="bar_main" />
+			<style name="bar_indicator" selector="indicator" />
+			<width>90%</width>
+			<pad_top>8</pad_top>
+		</lv_bar>
 
-		</obj>
-	</screen>
+	</view>
 </component>
