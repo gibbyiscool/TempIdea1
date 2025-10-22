@@ -1,0 +1,116 @@
+<globals>
+	<api>
+		<!-- Enumerations used in code/UI bindings -->
+		<enumdefs>
+			<enum name="units_mode">
+				<member name="Celsius" value="0" />
+				<member name="Fahrenheit" value="1" />
+			</enum>
+		</enumdefs>
+	</api>
+
+	<consts>
+		<!-- Colors -->
+		<color name="col_bg_dark" value="#111111" />
+		<color name="col_card" value="#1C1C1C" />
+		<color name="col_border" value="#2A2A2A" />
+		<color name="col_text" value="#FFFFFF" />
+		<color name="col_text_sm" value="#E0E0E0" />
+
+		<!-- Spacing / radius -->
+		<px name="pad_md" value="8" />
+		<px name="pad_lg" value="10" />
+		<px name="radius_md" value="8" />
+
+		<!-- Timings / limits -->
+		<int name="long_press_ms" value="700" />
+		<int name="idle_dim_s" value="30" />
+		<!-- Temperature slider in 0.1°C steps -->
+		<int name="target_min_tenthsC" value="150" />
+		<!-- 15.0°C -->
+		<int name="target_max_tenthsC" value="450" />
+		<!-- 45.0°C -->
+	</consts>
+
+	<styles>
+		<!-- Fullscreen dark background -->
+		<style name="st_bg_dark">
+			<prop name="bg_color" value="@col_bg_dark" />
+			<prop name="bg_opa" value="cover" />
+		</style>
+
+		<!-- Big label (main temperature) -->
+		<style name="st_lbl_big">
+			<prop name="text_color" value="@col_text" />
+			<prop name="text_font" value="font_m48" />
+		</style>
+
+		<!-- Small label (fan %, target, captions) -->
+		<style name="st_lbl_sm">
+			<prop name="text_color" value="@col_text_sm" />
+			<prop name="text_font" value="font_m20" />
+		</style>
+
+		<!-- Card panel used on Set/Options screens -->
+		<style name="st_card">
+			<prop name="bg_color" value="@col_card" />
+			<prop name="bg_opa" value="cover" />
+			<prop name="pad_all" value="@pad_md" />
+			<prop name="radius" value="@radius_md" />
+			<prop name="border_color" value="@col_border" />
+			<prop name="border_width" value="1" />
+		</style>
+
+		<!-- Primary button (optional) -->
+		<style name="st_btn_primary">
+			<prop name="pad_all" value="@pad_md" />
+			<prop name="radius" value="@radius_md" />
+			<prop name="bg_color" value="#2F87FF" />
+			<prop name="bg_opa" value="cover" />
+			<prop name="text_color" value="#FFFFFF" />
+			<prop name="text_font" value="font_m20" />
+		</style>
+	</styles>
+
+	<subjects>
+		<!-- Bindable state the UI and code can share -->
+		<float name="subject_temp_c" init="27.5" />
+		<!-- current interior temperature (°C) -->
+		<float name="subject_target_c" init="30.0" />
+		<!-- target setpoint (°C) -->
+		<int name="subject_fan_duty" init="20" />
+		<!-- 0..100 (%) -->
+		<int name="subject_units" init="0" enum="units_mode" />
+		<!-- 0=C, 1=F -->
+		<bool name="subject_manual_override" init="false" />
+		<int name="subject_manual_duty" init="60" />
+		<!-- 0..100 (%) -->
+		<bool name="subject_alarm_enabled" init="true" />
+		<float name="subject_alarm_high_c" init="45.0" />
+		<float name="subject_cal_offset_c" init="0.0" />
+		<int name="subject_brightness_pct" init="100" />
+		<!-- screen dimming -->
+	</subjects>
+
+	<images>
+		<!-- Placeholders: reference files in your assets folder if you add icons -->
+		<!-- <file name="ico_fan"  src="images/fan.png"/> -->
+		<!-- <file name="ico_gear" src="images/gear.png"/> -->
+	</images>
+
+	<fonts>
+		<!-- Pick one approach: tiny_ttf (baked) or freetype (runtime). 
+         Adjust src paths to your repo. -->
+
+		<!-- Compact baked fonts (Tiny TTF) -->
+		<tiny_ttf name="font_m20" src="fonts/Montserrat-Regular.ttf" size="20" />
+		<tiny_ttf name="font_m36" src="fonts/Montserrat-Regular.ttf" size="36" />
+		<tiny_ttf name="font_m48" src="fonts/Montserrat-Regular.ttf" size="48" />
+
+		<!-- OR FreeType (if enabled):
+    <freetype name="font_m20" path="fonts/Montserrat-Regular.ttf" size="20"/>
+    <freetype name="font_m36" path="fonts/Montserrat-Regular.ttf" size="36"/>
+    <freetype name="font_m48" path="fonts/Montserrat-Regular.ttf" size="48"/>
+    -->
+	</fonts>
+</globals>
